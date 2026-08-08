@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Doge to the Moon · Simulator</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐕</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div id="stars" aria-hidden="true"></div>
+<div class="moon-deco" aria-hidden="true">🌕</div>
+
+<header>
+  <div class="logo">
+    <span class="logo-doge">🐕</span>
+    <div>
+      <div class="logo-title">DOGE TO THE MOON</div>
+      <div class="logo-sub">PAPER TRADING SIMULATOR</div>
+    </div>
+  </div>
+  <div id="modeBadge" class="mode-badge sideways">
+    <span class="mode-ico">🌘</span>
+    <span class="mode-txt">SIDEWAYS</span>
+  </div>
+  <div class="header-right">
+    <button id="muteBtn" class="icon-btn" title="Toggle sound">🔊</button>
+    <button id="resetBtn" class="icon-btn" title="Reset wallet">♻️</button>
+  </div>
+</header>
+
+<main>
+  <aside class="col col-left">
+    <section class="card price-card">
+      <div class="ticker-name">DOGE / USDT <span class="live-dot"></span> LIVE</div>
+      <div class="price-row">
+        <div id="priceDisplay" class="price">$0.00000000</div>
+        <div id="changeBadge" class="change-badge up">+0.00%</div>
+      </div>
+      <div class="price-stats">
+        <div><span>24h High</span><b id="statHigh">0.00</b></div>
+        <div><span>24h Low</span><b id="statLow">0.00</b></div>
+        <div><span>Volume</span><b id="statVol">$0</b></div>
+      </div>
+    </section>
+
+    <section class="card moon-card">
+      <div class="moon-head">
+        <span>🌝 DISTANCE TO MOON</span>
+        <span id="moonPct">0.0%</span>
+      </div>
+      <div class="moon-meter"><div class="moon-fill" id="moonFill"></div></div>
+      <div class="moon-scale"><span>$0</span><span id="moonTarget">$10 MOON</span></div>
+    </section>
+
+    <section class="card news-card">
+      <div class="news-head"><span class="pulse">📡</span> LIVE MARKET NEWS</div>
+      <ul id="newsList" class="news-list"></ul>
+    </section>
+  </aside>
+
+  <section class="card chart-card">
+    <div class="chart-head">
+      <div>
+        <span class="chart-title">PRICE ACTION</span>
+        <span id="chartRange" class="chart-range">last 5 min</span>
+      </div>
+      <div class="chart-mode" id="chartMode">🌘 SIDEWAYS</div>
+    </div>
+    <canvas id="chart"></canvas>
+    <div class="chart-tip">live line · sampled ~2×/sec</div>
+  </section>
+
+  <aside class="col col-right">
+    <section class="card wallet-card">
+      <div class="wallet-head">
+        <span>💼 MY WALLET</span>
+        <span id="walletReturn" class="wallet-return">+0.00%</span>
+      </div>
+      <div class="wallet-row"><span>Cash (USDT)</span><b id="walletCash">$10,000.00</b></div>
+      <div class="wallet-row"><span>Doge</span><b id="walletDoge">0.0000</b></div>
+      <div class="wallet-row total"><span>Total Value</span><b id="walletTotal">$10,000.00</b></div>
+      <div class="wallet-row"><span>Avg Cost</span><b id="walletAvg">—</b></div>
+      <div class="wallet-row pnl"><span>Unrealized P/L</span><b id="walletPnl">$0.00</b></div>
+    </section>
+
+    <section class="card trade-card">
+      <div class="trade-tabs">
+        <button id="tabBuy" class="tab active">BUY</button>
+        <button id="tabSell" class="tab">SELL</button>
+      </div>
+      <div class="trade-body">
+        <div class="amt-zone">
+          <input id="amtInput" type="number" step="any" min="0" value="500" placeholder="0" />
+          <div class="amt-unit-toggle">
+            <button id="unitUsd" class="unit active">$ USDT</button>
+            <button id="unitDoge" class="unit">DOGE</button>
+          </div>
+        </div>
+        <div class="quick-chips">
+          <button class="chip" data-p="0.25">25%</button>
+          <button class="chip" data-p="0.5">50%</button>
+          <button class="chip" data-p="0.75">75%</button>
+          <button class="chip" data-p="1">MAX</button>
+        </div>
+        <div class="preview" id="tradePreview">You get ~0.0000 DOGE</div>
+        <button id="actionBtn" class="trade-btn buy">BUY DOGE 🚀</button>
+      </div>
+    </section>
+
+    <section class="card feed-card">
+      <div class="feed-head"><span>🔄 RECENT TRADES</span><span class="feed-live">live</span></div>
+      <ul id="tradeFeed" class="trade-feed"></ul>
+    </section>
+  </aside>
+</main>
+
+<div id="toasts" class="toasts"></div>
+<canvas id="canvasFx" class="fx-canvas"></canvas>
+<div id="moonOverlay" class="moon-overlay hidden">
+  <div class="moon-msg">
+    <div class="moon-big">🌕🚀</div>
+    <h1>WE MADE IT TO THE MOON!</h1>
+    <p>DOGE hit the $10 target. Absolute legend. It's all downhill from here (figuratively).</p>
+    <button id="moonClose" class="trade-btn buy">KEEP GOING</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
