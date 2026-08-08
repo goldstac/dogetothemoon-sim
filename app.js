@@ -693,4 +693,15 @@ window.addEventListener("load", () => {
     lastTrig = 0;
     S.moonShown = false;
   });
+
+  const intro = $("#dogeIntro");
+  let introDone = false;
+  const dismissIntro = () => {
+    if (introDone) return;
+    introDone = true;
+    intro.classList.add("gone");
+    setTimeout(() => intro.remove(), 1200);
+  };
+  intro.addEventListener("click", dismissIntro);
+  setTimeout(dismissIntro, 2350);
 });
