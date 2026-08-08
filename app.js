@@ -694,14 +694,35 @@ window.addEventListener("load", () => {
     S.moonShown = false;
   });
 
-  const intro = $("#dogeIntro");
-  let introDone = false;
-  const dismissIntro = () => {
-    if (introDone) return;
-    introDone = true;
-    intro.classList.add("gone");
-    setTimeout(() => intro.remove(), 1200);
+  const peek = $("#peekDoge");
+  let peekTimer = null;
+  const corners = [
+    { right: "18px", bottom: "18px" },
+    { left: "18px", bottom: "18px" },
+    { right: "18px", top: "80px" },
+    { left: "18px", top: "80px" },
+  ];
+  const peekHide = () => {
+    peek.style.opacity = "0";
+    peek.classList.remove("visible");
   };
-  intro.addEventListener("click", dismissIntro);
-  setTimeout(dismissIntro, 2350);
+  const schedulePeek = () => {
+    peekTimer = setTimeout(showPeek, 15000 + rnd() * 45000);
+  };
+  function showPeek() {
+    const c = corners[Math.floor(rnd() * corners.length)];
+    for (const dir of ["right", "left", "top", "bottom"]) peek.style[dir] = "";
+    Object.assign(peek.style, c);
+    peek.classList.add("visible");
+    peek.style.opacity = "1";
+    clearTimeout(peekHide.timer);
+    peekHide.timer = setTimeout(peekHide, 3000 + rnd() * 2500);
+    schedulePeek();
+  }
+  peek.addEventListener("click", () => {
+    clearTimeout(peekHide.timer);
+    peekHide();
+  });
+  schedulePeek();
+  window.__peekDoge = showPeek;
 });
